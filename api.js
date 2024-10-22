@@ -17,6 +17,12 @@ app.get("/", (req, res) => {
     res.send("working");
 });
 
+
+
+app.get("/data", (req, res) => {
+    res.send("working data");
+});
+
 app.get("/users", (req,res) =>{
     if(cache.has("users")){
         return res.json({
