@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 const dotenv = require('dotenv');
  const jwt = require('jsonwebtoken');
 const cors = require('cors');
-//const bcrypt = require("bcrypt");
+
 const multer = require('multer');
 
 var CryptoJS = require("crypto-js");

@@ -1,6 +1,6 @@
 var config = require('./dbconfig');
 const sql = require("mssql");
-const bcrypt = require('bcrypt')
+
 const jwt = require('jsonwebtoken')
 const cookieParser =require('cookie-parser')
 var CryptoJS = require("crypto-js");
