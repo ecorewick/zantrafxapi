@@ -1,51 +1,960 @@
-
-
+const dboperations = require('./dboperations');
 var express = require('express');
-var dotenv = require('dotenv');
-var NodeCache = require('node-cache');
+var bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+ const jwt = require('jsonwebtoken');
+const cors = require('cors');
+//const bcrypt = require("bcrypt");
+const multer = require('multer');
 
-dotenv.config({
-    path: "./config.env",
+var CryptoJS = require("crypto-js");
+
+var https = require('https'),
+crypto = require('crypto'),
+events = require('events'),
+qs = require('querystring'),
+eventEmitter = new events.EventEmitter();
+
+
+
+
+const sql = require("mssql");
+var config = require('./dbconfig');
+
+
+const { sign } = require("jsonwebtoken");
+const path = require('path');
+// const { hostname } = require('os');
+
+var app = express();
+var router = express.Router();
+
+
+//set for Global configuration access
+dotenv.config();
+
+// app.use(cors());
+app.use(cors({origin:"*"}))
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+
+app.use('/api', router);
+
+app.use('/images', express.static('images'));
+
+var drespose="";
+
+//// Global START
+
+router.route('/countrylist').get((request,response)=>{
+
+    try{
+        dboperations.getCountry().then(result =>{
+               console.log(result);
+               response.json(result[0]);
+           })
+         }
+        catch(error){
+
+        }
+
 });
 
-const app = express();
-const cache = new NodeCache();
-const port = process.env.PORT || 3000;
 
+router.post("/statelist", function(request, response){
 
-app.get("/", (req, res) => {
-    res.send("working");
+    let order= {...request.body}
+    dboperations.statelist(order).then(result => {
+       
+      console.log(result);
+        response.json(result);
+
+    });
+    
 });
 
 
+router.post("/CheckSpnsor", function(request, response){
 
-app.get("/data", (req, res) => {
-    res.send("working data");
+    let order= {...request.body}
+    dboperations.getCheckSpnsor(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
 });
 
-app.get("/users", (req,res) =>{
-    if(cache.has("users")){
-        return res.json({
-            success: true,
-            users: cache.get("users"),
-        });
+router.post("/signup", function(request, response){
+
+    let order= {...request.body}
+    dboperations.insertReg(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+router.post("/welcome", function(request, response){
+
+    try{
+
+    
+    let order= {...request.body}
+    dboperations.getwelcome(order).then(result => {
+    
+        console.log('1113');
+          console.log(result.recordsets[0]);
+          console.log('1114');
+          response.json({
+                message:"success",
+                result:result.recordsets[0]
+            });
+            //console.log(token);
+
+           // response.json(token);
+    
+    });
+
     }
-    else{
-        for(let i=0; i<4000000000; i++){}
-        const users = ["Abhi","Nahar","Rayan", "Eran","Zeke"];
+    catch(error){
 
-        cache.set("users", users,300);
-        return res.json({
-            success: true,
-            users,
-        });
     }
+
+
+
+
+    
+});
+router.post("/adminlogin", function(request, response){
+
+
+    try{
+
+        console.log('start');
+        let order= {...request.body}
+        dboperations.adminapi(order).then(result => {
+        
+         console.log(result.recordsets);
+ 
+           
+            if(result.recordsets[0][0].Valid =="TRUE")
+            {
+                const user= {id:result.recordsets[0][0].ID};
+    
+                var data =  result.recordsets[0][0].UserID;
+                  // Encrypt
+                var cipherUserID = CryptoJS.AES.encrypt(JSON.stringify(data), 'msecret-keys@9128').toString();
+                console.log(cipherUserID);
+                const token = jwt.sign({USERID:data},"msecret-keys@9128", {expiresIn:"15m"});
+                response.json({
+                    token:token,
+                    status:"success",
+                    message:"valid",
+                    id:result.recordsets[0][0].AdminID,
+                    UserID:result.recordsets[0][0].UserID,
+                    FullName:'Admin',
+                    EmailID:'',
+                    valid:result.recordsets[0][0].Valid,
+                    url:result.recordsets[0][0].URL,
+                    ismember:'0',
+                    Encrypt:cipherUserID
+                });
+        
+             }
+             else{
+                response.json({
+                    status:"failure",
+                    msg:'Invalid UserID or Password',
+                   
+                });
+
+
+
+             }
+        });
+
+    }
+    catch(error){
+
+    }
+   
+    
+});
+
+
+router.post("/loginverify", function(request, response){
+
+    try{
+
+        console.log('ccc1');
+       // let order= {...request.body}
+
+        const token1 = request.header('Authorization');
+        console.log(token1);
+        if (!token1) return res.status(401).json({ error: 'Access denied' });
+        console.log('ccc2');
+        try {
+            console.log('ccc3');
+            const decoded = jwt.verify(token1, 'msecret-keys@9128');
+            console.log(decoded);
+            console.log('ccc4');
+            request.USERID = decoded.USERID;
+            if(decoded.USERID != null)
+            {
+                response.status(200).json({ status: 'Valid token' });
+            }
+            else{
+                response.status(200).json({ status: 'Invalid token' });
+            }
+           next();
+            } catch (error) {
+                response.status(401).json({ status: 'Session expaired Invalid token' });
+            }
+            
+      
+
+      
+
+    }
+    catch(error){
+
+    }
+   
+    
+});
+
+
+router.post("/signin", function(request, response){
+
+
+    try
+    {
+
+        let order= {...request.body}
+        dboperations.signinapi(order).then(result => {
+        
+           // console.log(result.recordsets);
+    
+           
+            if(result.recordsets[0][0].Valid=="TRUE")
+            {
+                const user= {id:result.recordsets[0][0].ID};
+    
+                var data =  result.recordsets[0][0].UserID;
+                  // Encrypt
+                var cipherUserID = CryptoJS.AES.encrypt(JSON.stringify(data), 'msecret-keys@9128').toString();
+    
+                const token = jwt.sign({USERID:user},"msecret-keys@9128", {expiresIn:"30m"});
+                response.json({
+                    token:token,
+                    status:"success",
+                    msg:'Valid',
+                    id:result.recordsets[0][0].ID,
+                    UserID:result.recordsets[0][0].USERID,
+                    FullName:result.recordsets[0][0].FIRSTNAME,
+                    EmailID:result.recordsets[0][0].EMailId,
+                    valid:result.recordsets[0][0].Valid,
+                    url:result.recordsets[0][0].URL,
+                    ismember:'1',
+                    Encrypt:cipherUserID
+                });
+        
+             }
+             else{
+                response.json({
+                    
+                    status:"failure",
+                    msg:'Invalid UserID or Password',
+            
+                });
+             }
+        });
+
+
+    } catch(error){
+
+    }
+  
+    
+});
+
+
+router.post("/getdashboard", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getdashboard(order).then(result => {
+    
+       
+          console.log(result.recordsets);
+          console.log('1114');
+          response.json({
+                
+                message:"success",
+                result:result.recordsets[0]
+            });
+            //console.log(token);
+
+           // response.json(token);
+    
+    });
+
+
+
+
+
+    
+});
+
+
+router.post("/getname", function(request, response){
+
+    try{
+
+    
+    let order= {...request.body}
+    dboperations.getName(order).then(result => {
+    
+        console.log('1113');
+          console.log(result.recordsets[0]);
+          console.log('1114');
+          response.json({
+                message:"success",
+                result:result.recordsets[0]
+            });
+            //console.log(token);
+
+           // response.json(token);
+    
+    });
+
+    }
+    catch(error){
+
+    }
+
+
+
+
+    
+});
+
+
+router.post("/updatememberpassword", function(request, response){
+
+    let order= {...request.body}
+    dboperations.updatepassword(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+
+                });
+            }
+    });
+    
+});
+
+router.post("/updateadminpassword", function(request, response){
+
+    let order= {...request.body}
+    dboperations.updateadminpwd(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                  
+
+                });
+            }
+    });
+    
+});
+
+
+router.post("/getprofile", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getprofileadmin(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+
+                });
+            }
+    });
+    
+});
+
+router.post("/getbalancebywallet", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getbalancebywallet(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+router.post("/updateprofile", function(request, response){
+
+    let order= {...request.body}
+    dboperations.updateprofileadmin(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
 });
 
 
 
-app.listen(port, (c) => {
-    console.log(
-        `Server is working on port ${port} in ${process.env.NODE_ENV} Mode.`
-    )
+router.post("/updateroisetting", function(request, response){
+
+    let order= {...request.body}
+    dboperations.roisetting(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
 });
+
+router.post("/roilist", function(request, response){
+
+    let order= {...request.body}
+    dboperations.roilist(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+
+                });
+            }
+    });
+    
+});
+
+router.post("/updatebtcaddres", function(request, response){
+
+    let order= {...request.body}
+    dboperations.updatebtcaddress(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+crypto.randomBytes(12,function (err, bytes){
+console.log(bytes.toString("hex"));
+});
+//deposit
+
+const storage = multer.diskStorage({
+    destination:function(request, file, cb){
+        cb(null,'./images')
+    },
+    filename:function(request, file, cb){
+        crypto.randomBytes(12, function(err,bytes){
+            const fn= bytes.toString("hex")+ path.extname(file.originalname)
+            cb(null,fn)
+        })
+    }
+})
+
+
+const upload = multer({storage:storage})
+
+router.post("/insetdepositrequest",upload.single("filename"),async function(request, response){
+
+   let order= {...request.body}
+  
+
+    console.log();
+    console.log(request.body.userid);
+    console.log(request.body.amount);
+    console.log(request.body.referenceno);
+    
+
+
+    try{
+        
+       
+        const conn= await sql.connect(config);
+            const res =await conn.request()
+           
+            .input("filename", request.file.filename)
+            .input("TxID", request.body.txid)
+            .input("Amount", request.body.amount)
+            .input("PaymentMode", request.body.PaymentMode)
+            .input("Address", request.body.Address)
+            .input("MEMBERID", request.body.userid)
+            .execute("Usp_insertDepositRequest");
+           // console.log(res);
+            //return res;
+
+                if(res !=null){
+                       
+                        response.json({
+                            data:res.recordsets[0],
+                            
+                        });
+             }
+
+
+    }
+    catch(error){
+        console.log(error);
+    }
+
+
+       
+});
+
+
+
+
+router.post("/approvedrequest", function(request, response){
+
+    let order= {...request.body}
+    dboperations.updateapprovedrequest(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+router.post("/rejectrequest", function(request, response){
+
+    let order= {...request.body}
+    dboperations.updaterejectrequest(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+
+
+
+
+router.post("/getdirectteam", function(request, response){
+
+    let order= {...request.body}
+    dboperations.directteam(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+
+                });
+            }
+    });
+    
+});
+
+router.post("/getMyteam", function(request, response){
+
+    let order= {...request.body}
+    dboperations.teamnetwork(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],                   
+                });
+            }
+    });
+    
+});
+
+router.post("/getdailyincome", function(request, response){
+
+    let order= {...request.body}
+    dboperations.dailyincome(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],                   
+                });
+            }
+    });
+    
+});
+
+
+router.post("/getdirectincome", function(request, response){
+
+    let order= {...request.body}
+    dboperations.directincome(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],                   
+                });
+            }
+    });
+    
+});
+
+//Deposit Request
+
+router.post("/getdepositrequestlist", function(request, response){
+
+    let order= {...request.body}
+    dboperations.depositrequest(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],                   
+                });
+            }
+    });
+    
+});
+//End
+
+
+router.post("/upgradadmin", function(request, response){
+
+    let order= {...request.body}
+    dboperations.upgradeadmin(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],                   
+                });
+            }
+    });
+    
+});
+
+router.post("/upgradenow", function(request, response){
+
+    let order= {...request.body}
+    dboperations.upgrade(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],                   
+                });
+            }
+    });
+    
+});
+
+router.post("/RechargeDtls", function(request, response){
+
+    let order= {...request.body}
+    dboperations.Upgradedetails(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+
+
+router.post("/fundtransfer", function(request, response){
+
+    let order= {...request.body}
+    dboperations.fundtranfer(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+router.post("/fundtransferdtls", function(request, response){
+
+    let order= {...request.body}
+    dboperations.fundtranferDetails(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+router.post("/walletstatement", function(request, response){
+
+    let order= {...request.body}
+    dboperations.walletbalancelist(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+router.post("/ministatement", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getministatement(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+router.post("/membersearchdtls", function(request, response){
+
+    let order= {...request.body}
+    dboperations.membersearch(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+router.post("/blockunblock", function(request, response){
+
+    let order= {...request.body}
+    dboperations.blockunblock(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+
+router.post("/withdrwalrequest", function(request, response){
+
+    let order= {...request.body}
+    dboperations.withdrwalrequest(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+router.post("/withdrwalrequestuser", function(request, response){
+
+    let order= {...request.body}
+    dboperations.withdrwalrequestuser(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+
+
+
+router.post("/withdrwalrequestDetails", function(request, response){
+
+    let order= {...request.body}
+    dboperations.withdrwalrequestDetails(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+
+router.post("/ibcommisionsDtls", function(request, response){
+
+    let order= {...request.body}
+    dboperations.ibcommisions(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+router.post("/tradingbonusDtls", function(request, response){
+
+    let order= {...request.body}
+    dboperations.tradingbonus(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+router.post("/teamwithwalbousdtls", function(request, response){
+
+    let order= {...request.body}
+    dboperations.teamwithwalbous(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
+
+
+router.post("/insertFundcreditordebit", function(request, response){
+
+    let order= {...request.body}
+    dboperations.insertfundcredit(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],                   
+                });
+            }
+    });
+    
+});
+
+
+
+
+
+// var port = process.env.PORT || 8090;
+// app.listen(port);
+// console.log('api is running on '+ port);
+
+//agent.moniespay.com
+var port = 8090;
+const hostname='localhost';
+const base_url = `http://${hostname}:${port}`;
+app.listen(port,hostname,() =>{
+    console.log(`Server api is running on ${base_url}`);
+})
