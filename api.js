@@ -1,3 +1,5 @@
+
+
 const dboperations = require('./dboperations');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -14,7 +16,7 @@ crypto = require('crypto'),
 events = require('events'),
 qs = require('querystring'),
 eventEmitter = new events.EventEmitter();
-
+const port = process.env.PORT || 3000;
 
 
 
@@ -947,14 +949,8 @@ router.post("/insertFundcreditordebit", function(request, response){
 
 
 
-// var port = process.env.PORT || 8090;
-// app.listen(port);
-// console.log('api is running on '+ port);
-
-//agent.moniespay.com
-var port = 8090;
-const hostname='localhost';
-const base_url = `http://${hostname}:${port}`;
-app.listen(port,hostname,() =>{
-    console.log(`Server api is running on ${base_url}`);
-})
+app.listen(port, (c) => {
+    console.log(
+        `Server is working on port ${port} in ${process.env.NODE_ENV} Mode.`
+    )
+});
