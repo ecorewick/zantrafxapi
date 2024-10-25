@@ -92,6 +92,7 @@ router.post("/CheckSpnsor", function(request, response){
     
 });
 
+
 router.post("/signup", function(request, response){
 
     let order= {...request.body}
@@ -99,10 +100,7 @@ router.post("/signup", function(request, response){
     
           if(result !=null){
                 console.log(result.recordsets[0])
-                response.json({
-                    data:result.recordsets[0],
-                   
-                });
+                response.json(result["recordsets"][0]);
             }
     });
     
@@ -118,10 +116,7 @@ router.post("/welcome", function(request, response){
         console.log('1113');
           console.log(result.recordsets[0]);
           console.log('1114');
-          response.json({
-                message:"success",
-                result:result.recordsets[0]
-            });
+          response.json(result["recordsets"][0]);
             //console.log(token);
 
            // response.json(token);

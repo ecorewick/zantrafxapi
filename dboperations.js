@@ -97,6 +97,8 @@ async function getCheckSpnsor(prod){
             .input("Address",prod.address)
             .input("pincode",prod.pincode)
             .input("city",prod.city)
+            .input("aadharno",prod.aadharno)
+            .input("panno",prod.panno)
             .input("PWD",prod.password)
           
             .execute("USP_Register");
