@@ -1,6 +1,5 @@
 var config = require('./dbconfig');
 const sql = require("mssql");
-
 const jwt = require('jsonwebtoken')
 const cookieParser =require('cookie-parser')
 var CryptoJS = require("crypto-js");
@@ -14,12 +13,23 @@ var CryptoJS = require("crypto-js");
 
 async function getCountry(){
 
+    // try{
+
+
+    //     let pool = await sql.connect(config);
+    //     let procountry = await pool.request().query("select * from tblCountryMaster");
+    //     return procountry.recordsets;
+
+    // }catch(error){
+    //     console.log(error);
+    // }
+
     try{
 
-
-        let pool = await sql.connect(config);
-        let procountry = await pool.request().query("select * from tblCountryMaster");
-        return procountry.recordsets;
+     const conn= await sql.connect(config);
+     const res =await conn.request()
+    .execute("USP_GetCountry");
+     return res;
 
     }catch(error){
         console.log(error);
@@ -134,22 +144,6 @@ async function adminapi(prod){
 }
 
 
-async function signinapi(prod){
-
-    try{
-            const conn= await sql.connect(config);
-            const res =await conn.request()
-            .input("USERID",prod.email)
-            .input("PASSWORD",prod.password)
-            .input("IP",prod.ip)
-            .input("URL",prod.url)           
-            .execute("USP_VALIDATELOGIN_Client");
-            return res;
-    }catch(error){
-        console.log(error);
-    }
-
-}
 
 async function getdashboard(prod){
 
@@ -940,14 +934,35 @@ async function insertfundcredit(prod){
 }
  
 
+//mobile app api start
 
+async function signinapi(prod){
+
+    try{
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+            .input("USERID",prod.email)
+            .input("PASSWORD",prod.password)
+            .input("IP",prod.ip)
+            .input("URL","")
+            .input("DeviceID",prod.diviceid)
+            .input("Deviemodel",prod.divicemodel)
+            .execute("USP_VALIDATELOGIN_mobileapp");
+            return res;
+    }catch(error){
+        console.log(error);
+    }
+
+}
+
+
+//mobile app  end
 module.exports ={
 
     /////  global
     getCheckSpnsor:getCheckSpnsor,
     insertReg:insertReg,
     getwelcome:getwelcome,
-    signinapi:signinapi,
     adminapi:adminapi,
     getdashboard:getdashboard,
     updatepassword:updatepassword,
@@ -987,7 +1002,12 @@ module.exports ={
     getbalancebywallet:getbalancebywallet,
     getSupportReqUserIDlist:getSupportReqUserIDlist,
     insertfundcredit:insertfundcredit,
-    upgradeadmin:upgradeadmin
+    upgradeadmin:upgradeadmin,
+
+
+    //mobileapp
+    signinapi:signinapi,
+
 
    
 }

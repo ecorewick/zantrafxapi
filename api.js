@@ -48,12 +48,12 @@ var drespose="";
 
 //// Global START
 
-router.route('/countrylist').get((request,response)=>{
+router.route('/countrylist').post((request,response)=>{
 
     try{
         dboperations.getCountry().then(result =>{
                console.log(result);
-               response.json(result[0]);
+               response.json(result["recordsets"][0]);
            })
          }
         catch(error){
@@ -69,7 +69,7 @@ router.post("/statelist", function(request, response){
     dboperations.statelist(order).then(result => {
        
       console.log(result);
-        response.json(result);
+        response.json(result["recordsets"][0]);
 
     });
     
@@ -236,60 +236,6 @@ router.post("/loginverify", function(request, response){
     
 });
 
-
-router.post("/signin", function(request, response){
-
-
-    try
-    {
-
-        let order= {...request.body}
-        dboperations.signinapi(order).then(result => {
-        
-           // console.log(result.recordsets);
-    
-           
-            if(result.recordsets[0][0].Valid=="TRUE")
-            {
-                const user= {id:result.recordsets[0][0].ID};
-    
-                var data =  result.recordsets[0][0].UserID;
-                  // Encrypt
-                var cipherUserID = CryptoJS.AES.encrypt(JSON.stringify(data), 'msecret-keys@9128').toString();
-    
-                const token = jwt.sign({USERID:user},"msecret-keys@9128", {expiresIn:"30m"});
-                response.json({
-                    token:token,
-                    status:"success",
-                    msg:'Valid',
-                    id:result.recordsets[0][0].ID,
-                    UserID:result.recordsets[0][0].USERID,
-                    FullName:result.recordsets[0][0].FIRSTNAME,
-                    EmailID:result.recordsets[0][0].EMailId,
-                    valid:result.recordsets[0][0].Valid,
-                    url:result.recordsets[0][0].URL,
-                    ismember:'1',
-                    Encrypt:cipherUserID
-                });
-        
-             }
-             else{
-                response.json({
-                    
-                    status:"failure",
-                    msg:'Invalid UserID or Password',
-            
-                });
-             }
-        });
-
-
-    } catch(error){
-
-    }
-  
-    
-});
 
 
 router.post("/getdashboard", function(request, response){
@@ -946,7 +892,63 @@ router.post("/insertFundcreditordebit", function(request, response){
 });
 
 
+//Mobile app
 
+router.post("/signin", function(request, response){
+
+
+    try
+    {
+
+        let order= {...request.body}
+        dboperations.signinapi(order).then(result => {
+        
+           // console.log(result.recordsets);
+    
+           
+            if(result.recordsets[0][0].Valid=="TRUE")
+            {
+                const user= {id:result.recordsets[0][0].ID};
+    
+                var data =  result.recordsets[0][0].UserID;
+                  // Encrypt
+                var cipherUserID = CryptoJS.AES.encrypt(JSON.stringify(data), 'msecret-keys@9128').toString();
+    
+                const token = jwt.sign({USERID:user},"msecret-keys@9128", {expiresIn:"30m"});
+                response.json({
+                    token:token,
+                    status:"success",
+                    msg:'Valid',
+                    id:result.recordsets[0][0].ID,
+                    UserID:result.recordsets[0][0].USERID,
+                    FullName:result.recordsets[0][0].FIRSTNAME,
+                    EmailID:result.recordsets[0][0].EMailId,
+                    valid:result.recordsets[0][0].Valid,
+                    url:result.recordsets[0][0].URL,
+                    ismember:'1',
+                    Encrypt:cipherUserID
+                });
+        
+             }
+             else{
+                response.json({
+                    
+                    status:"failure",
+                    msg:'Invalid UserID or Password',
+            
+                });
+             }
+        });
+
+
+    } catch(error){
+
+    }
+  
+    
+});
+
+//End Mobile app
 
 
 app.listen(port, (c) => {
