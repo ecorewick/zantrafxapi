@@ -89,10 +89,14 @@ async function getCheckSpnsor(prod){
             .input("INTRODUCERUSEID","")
             .input("TITLE",prod.title)
             .input("COUNTRY",prod.country)
+            .input("State",prod.state)
             .input("FIRSTNAME",prod.firstname)
             .input("LastName",prod.lastname)
             .input("MOBILENO",prod.mobile)
             .input("EMAILID",prod.email)
+            .input("Address",prod.address)
+            .input("pincode",prod.pincode)
+            .input("city",prod.city)
             .input("PWD",prod.password)
           
             .execute("USP_Register");
