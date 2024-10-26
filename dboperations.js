@@ -954,6 +954,7 @@ async function signinapi(prod){
             .input("IP",prod.ip)
             .input("URL","")
             .input("DeviceID",prod.diviceid)
+            .input("Brand",prod.brand)
             .input("Deviemodel",prod.divicemodel)
             .execute("USP_VALIDATELOGIN_mobileapp");
             return res;
