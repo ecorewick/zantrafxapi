@@ -113,11 +113,13 @@ async function getCheckSpnsor(prod){
 
 
 async function getwelcome(prod){
-    console.log(prod.id);
+    console.log(prod.memberid);
           try{
+            
             const conn= await sql.connect(config);
             const res =await conn.request()
-            .input("memberId ",prod.id)
+            .input("UserID",prod.memberid)
+          
             .execute("USP_GetWelComeLetterDt");
             return res;
                           

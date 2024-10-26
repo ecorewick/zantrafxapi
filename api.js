@@ -114,12 +114,8 @@ router.post("/welcome", function(request, response){
     dboperations.getwelcome(order).then(result => {
     
         console.log('1113');
-          console.log(result.recordsets[0]);
-          console.log('1114');
           response.json(result["recordsets"][0]);
-            //console.log(token);
 
-           // response.json(token);
     
     });
 
