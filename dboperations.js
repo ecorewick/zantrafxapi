@@ -963,7 +963,22 @@ async function signinapi(prod){
     }
 
 }
+async function getmemberdashboard(prod){
 
+    // Decrypt
+   
+      try{
+              const conn= await sql.connect(config);
+              const res =await conn.request()
+              .input("USERID",userid)
+              .execute("USP_GetCustomerDashBoardDtls_mobileapp");
+              return res;
+      }catch(error){
+          console.log(error);
+      }
+  
+  }
+  
 
 //mobile app  end
 module.exports ={
@@ -1016,6 +1031,7 @@ module.exports ={
 
     //mobileapp
     signinapi:signinapi,
+    getmemberdashboard:getmemberdashboard
 
 
    

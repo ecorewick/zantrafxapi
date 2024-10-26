@@ -939,6 +939,21 @@ router.post("/signin", function(request, response){
     
 });
 
+
+
+router.post("/getmemerdashboard", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getmemberdashboard(order).then(result => {
+    
+       console.log(result.recordsets);
+      response.json(result["recordsets"][0]);
+          
+    
+    });
+    
+});
+
 //End Mobile app
 
 
