@@ -970,7 +970,7 @@ async function getmemberdashboard(prod){
       try{
               const conn= await sql.connect(config);
               const res =await conn.request()
-              .input("USERID",userid)
+              .input("USERID",prod.userid)
               .execute("USP_GetCustomerDashBoardDtls_mobileapp");
               return res;
       }catch(error){
