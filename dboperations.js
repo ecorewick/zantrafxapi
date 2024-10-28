@@ -979,6 +979,21 @@ async function getmemberdashboard(prod){
   
   }
   
+  async function getprofile(prod){
+
+    try{
+        
+      const conn= await sql.connect(config);
+            const res =await conn.request()
+            .input("MemberID",prod.userId)
+            .execute("USP_GetMemberDetailsByMemberID");
+            return res;
+    }catch(error){
+        console.log(error);
+    }
+
+}
+
 
 //mobile app  end
 module.exports ={
@@ -1031,7 +1046,8 @@ module.exports ={
 
     //mobileapp
     signinapi:signinapi,
-    getmemberdashboard:getmemberdashboard
+    getmemberdashboard:getmemberdashboard,
+    getprofile:getprofile
 
 
    

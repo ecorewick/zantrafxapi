@@ -954,6 +954,18 @@ router.post("/getmemerdashboard", function(request, response){
     
 });
 
+router.post("/profile", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getprofile(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json(result["recordsets"][0]);
+            }
+    });
+    
+});
 //End Mobile app
 
 
