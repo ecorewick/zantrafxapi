@@ -966,6 +966,62 @@ router.post("/profile", function(request, response){
     });
     
 });
+
+
+router.post("/updateuserprofile",upload.single("filename"),async function(request, response){
+
+    let order= {...request.body}
+   
+ 
+     console.log();
+     console.log(request.body.userid);
+     console.log(request.body.name);
+     console.log(request.body.address);
+     console.log(request.body.country);
+     console.log(request.body.state);
+     console.log(request.body.pincode);
+     console.log(request.body.mobileno);
+     console.log(request.body.emailid);
+ 
+ 
+     try{
+         
+        
+         const conn= await sql.connect(config);
+             const res =await conn.request()
+            
+             .input("TITLE", "Mr")
+             .input("DIST", "")
+             .input("STATE", request.body.state)
+             .input("COUNTRY",request.body.country)
+             .input("FIRSTNAME",request.body.name)
+            .input("ADDRESS",request.body.address)
+            .input("CITY","")
+            .input("PINCODE",request.body.pincode)
+            .input("MOBILENO",request.body.mobileno)
+            .input("EMAILID",request.body.emailid)
+            .input("MemberID",request.body.userid)
+            .input("ProfileImage",request.file.filename)
+
+
+
+             .execute("Usp_editregistration_member");
+            // console.log(res);
+             //return res;
+ 
+                 if(res !=null){
+                    response.json(result["recordsets"][0]);
+              }
+ 
+ 
+     }
+     catch(error){
+         console.log(error);
+     }
+ 
+ 
+        
+ });
 //End Mobile app
 
 
