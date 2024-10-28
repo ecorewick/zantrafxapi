@@ -1010,7 +1010,11 @@ router.post("/updateuserprofile",upload.single("filename"),async function(reques
              //return res;
  
                  if(res !=null){
-                    response.json(result["recordsets"][0]);
+                    
+                    response.json({
+                        data:res.recordsets[0],
+                        
+                    });
               }
  
  
