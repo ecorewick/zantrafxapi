@@ -938,9 +938,6 @@ router.post("/signin", function(request, response){
   
     
 });
-
-
-
 router.post("/getmemerdashboard", function(request, response){
 
     let order= {...request.body}
@@ -954,10 +951,11 @@ router.post("/getmemerdashboard", function(request, response){
     
 });
 
+
 router.post("/profile", function(request, response){
 
     let order= {...request.body}
-    dboperations.getprofile(order).then(result => {
+    dboperations.getprofileadmin(order).then(result => {
     
           if(result !=null){
                 console.log(result.recordsets[0])
@@ -966,6 +964,8 @@ router.post("/profile", function(request, response){
     });
     
 });
+
+
 
 
 router.post("/updateuserprofile",upload.single("filename"),async function(request, response){
@@ -1026,6 +1026,94 @@ router.post("/updateuserprofile",upload.single("filename"),async function(reques
  
         
  });
+ 
+
+ 
+router.post("/kycprofile", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getkycprofile(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json(result["recordsets"][0]);
+            }
+    });
+    
+});
+
+
+
+router.post("/mydirectteam", function(request, response){
+
+    let order= {...request.body}
+    dboperations.directteammember(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+
+                });
+            }
+    });
+    
+});
+
+router.post("/mylevelteam", function(request, response){
+
+    let order= {...request.body}
+    dboperations.mylevelteam(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+
+                });
+            }
+    });
+    
+});
+
+router.post("/getlevelachiver", function(request, response){
+
+    let order= {...request.body}
+    dboperations.levelachiverreport(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+
+                });
+            }
+    });
+    
+});
+
+router.post("/mytotalteam", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getmytotalteam(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+
+                });
+            }
+    });
+    
+});
+
+
+
 //End Mobile app
 
 

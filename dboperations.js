@@ -943,7 +943,6 @@ async function insertfundcredit(prod){
  
 
 //mobile app api start
-
 async function signinapi(prod){
 
     try{
@@ -963,6 +962,7 @@ async function signinapi(prod){
     }
 
 }
+
 async function getmemberdashboard(prod){
 
     // Decrypt
@@ -978,21 +978,150 @@ async function getmemberdashboard(prod){
       }
   
   }
-  
-  async function getprofile(prod){
 
-    try{
-        
-      const conn= await sql.connect(config);
+
+
+  async function directteammember(prod){
+
+    try{  
+      
+        console.log("My ditects sp--- 1");
+
+
+            console.log(prod.userid);
+            console.log('---from -'+prod.fromdt);
+            console.log('---to -'+prod.todt);
+            console.log(prod.page);
+            console.log(prod.limit);
+          
+
+            const conn= await sql.connect(config);
             const res =await conn.request()
-            .input("MemberID",prod.userId)
-            .execute("USP_GetMemberDetailsByMemberID");
+
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("Status",prod.status)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 100000)
+            .execute("USP_getMydirects_Pagination");
             return res;
+
+            
+
     }catch(error){
         console.log(error);
     }
 
 }
+
+async function mylevelteam(prod){
+
+    try{  
+      
+        console.log("My ditects sp--- 1");
+
+
+            console.log(prod.userid);
+            console.log('---from -'+prod.fromdt);
+            console.log('---to -'+prod.todt);
+            console.log(prod.page);
+            console.log(prod.limit);
+          
+
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("Status",prod.status)
+            .input("level",prod.level)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 100000)
+            .execute("USP_getMyLevel_Pagination");
+            return res;
+
+            
+
+    }catch(error){
+        console.log(error);
+    }
+
+}
+
+async function levelachiverreport(prod){
+
+    try{  
+      
+        console.log("My levelachiverreport sp--- 1");
+
+
+            console.log(prod.userid);
+            console.log('---from -'+prod.fromdt);
+            console.log('---to -'+prod.todt);
+            console.log(prod.page);
+            console.log(prod.limit);
+          
+
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("Status",prod.status)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 100000)
+            .execute("USP_getLevelAchiver_Pagination");
+            return res;
+
+            
+
+    }catch(error){
+        console.log(error);
+    }
+
+}
+
+async function getmytotalteam(prod){
+
+    try{  
+      
+        console.log("My levelachiverreport sp--- 1");
+
+
+            console.log(prod.userid);
+            console.log('---from -'+prod.fromdt);
+            console.log('---to -'+prod.todt);
+            console.log(prod.page);
+            console.log(prod.limit);
+          
+
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("Status",prod.status)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 100000)
+            .execute("USP_getmytotalteam_Pagination");
+            return res;
+
+            
+
+    }catch(error){
+        console.log(error);
+    }
+
+}
+
 
 
 //mobile app  end
@@ -1047,8 +1176,10 @@ module.exports ={
     //mobileapp
     signinapi:signinapi,
     getmemberdashboard:getmemberdashboard,
-    getprofile:getprofile
-
+    directteammember:directteammember,
+    mylevelteam:mylevelteam,
+    levelachiverreport:levelachiverreport,
+    getmytotalteam:getmytotalteam
 
    
 }
