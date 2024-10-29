@@ -1051,11 +1051,7 @@ router.post("/mydirectteam", function(request, response){
     
           if(result !=null){
                 console.log(result.recordsets[0])
-                response.json({
-                    data:result.recordsets[0],
-                   
-
-                });
+                response.json(result["recordsets"][0]);
             }
     });
     
@@ -1066,14 +1062,10 @@ router.post("/mylevelteam", function(request, response){
     let order= {...request.body}
     dboperations.mylevelteam(order).then(result => {
     
-          if(result !=null){
-                console.log(result.recordsets[0])
-                response.json({
-                    data:result.recordsets[0],
-                   
-
-                });
-            }
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
     });
     
 });
@@ -1083,14 +1075,10 @@ router.post("/getlevelachiver", function(request, response){
     let order= {...request.body}
     dboperations.levelachiverreport(order).then(result => {
     
-          if(result !=null){
-                console.log(result.recordsets[0])
-                response.json({
-                    data:result.recordsets[0],
-                   
-
-                });
-            }
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
     });
     
 });
@@ -1100,18 +1088,13 @@ router.post("/mytotalteam", function(request, response){
     let order= {...request.body}
     dboperations.getmytotalteam(order).then(result => {
     
-          if(result !=null){
-                console.log(result.recordsets[0])
-                response.json({
-                    data:result.recordsets[0],
-                   
-
-                });
-            }
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
     });
     
 });
-
 
 
 //End Mobile app
