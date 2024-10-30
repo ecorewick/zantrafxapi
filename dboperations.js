@@ -1185,9 +1185,6 @@ async function depositrequestdetails(prod){
         
         }
 
-
-
-
 //mobile app  end
 module.exports ={
 
