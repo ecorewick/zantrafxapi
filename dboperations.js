@@ -943,6 +943,7 @@ async function insertfundcredit(prod){
  
 
 //mobile app api start
+
 async function signinapi(prod){
 
     try{
@@ -1036,12 +1037,13 @@ async function mylevelteam(prod){
             .input("Userid",prod.userid)
             .input("StartDate",prod.fromdt)
             .input("EndDate",prod.todt)
-            .input("Status",prod.status)
-            .input("level",prod.level)
+            .input("status",prod.status)
+            .input("Side","0")
+            .input("Level",prod.level)
             .input("pageno",1)
             .input("PageSize",10000)
             .input("RecordCount", 100000)
-            .execute("USP_getMyLevel_Pagination");
+            .execute("USP_GetGenealogy_User_Pagination");
             return res;
 
             
@@ -1121,6 +1123,68 @@ async function getmytotalteam(prod){
     }
 
 }
+async function depositrequestdetails(prod){
+    
+    try{  
+      
+      console.log("Get Depost Request  sp--- 1");
+
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("status",prod.status)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 10000)
+            .execute("USP_getRequestedDepositDtls_User_Pagination");
+            return res;
+
+            
+
+    }catch(error){
+        console.log(error);
+    }
+    
+    
+    
+    }
+
+
+    
+
+    async function getwalletstatement(prod){
+    
+        try{  
+          
+        
+            
+              console.log("Get wallet list  sp--- 2");
+                const conn= await sql.connect(config);
+                const res =await conn.request()
+    
+                .input("Userid",prod.userid)
+                .input("StartDate",prod.starttdate)
+                .input("EndDate",prod.enddate)
+                .input("wallettype",prod.wallet)
+                .input("pageno",prod.page)
+                .input("PageSize",prod.limit)
+                .input("RecordCount", 10)
+                .execute("USP_GetAccountDetails_User_Pagination");
+                return res;
+    
+                
+    
+        }catch(error){
+            console.log(error);
+        }
+        
+        
+        
+        }
+
 
 
 
@@ -1179,7 +1243,9 @@ module.exports ={
     directteammember:directteammember,
     mylevelteam:mylevelteam,
     levelachiverreport:levelachiverreport,
-    getmytotalteam:getmytotalteam
+    getmytotalteam:getmytotalteam,
+    depositrequestdetails:depositrequestdetails,
+    getwalletstatement:getwalletstatement
 
    
 }

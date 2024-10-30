@@ -884,7 +884,6 @@ router.post("/insertFundcreditordebit", function(request, response){
 
 
 //Mobile app
-
 router.post("/signin", function(request, response){
 
 
@@ -1087,6 +1086,35 @@ router.post("/mytotalteam", function(request, response){
 
     let order= {...request.body}
     dboperations.getmytotalteam(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
+router.post("/depositrequestlistuser", function(request, response){
+
+    let order= {...request.body}
+    dboperations.depositrequestdetails(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
+
+
+
+router.post("/walletstatement", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getwalletstatement(order).then(result => {
     
         if(result !=null){
             console.log(result.recordsets[0])
