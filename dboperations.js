@@ -1155,12 +1155,18 @@ async function depositrequestdetails(prod){
 
     
 
+    
+
     async function getwalletstatement(prod){
     
         try{  
           
-        
-            
+            console.log("Get wallet list  sp--- 1");
+            console.log(prod.userid);
+            console.log(prod.starttdate);
+            console.log(prod.enddate);
+            console.log(prod.wallet);
+
               console.log("Get wallet list  sp--- 2");
                 const conn= await sql.connect(config);
                 const res =await conn.request()
@@ -1169,9 +1175,9 @@ async function depositrequestdetails(prod){
                 .input("StartDate",prod.starttdate)
                 .input("EndDate",prod.enddate)
                 .input("wallettype",prod.wallet)
-                .input("pageno",prod.page)
-                .input("PageSize",prod.limit)
-                .input("RecordCount", 10)
+                .input("pageno",1)
+                .input("PageSize",10000)
+                .input("RecordCount", 100000)
                 .execute("USP_GetAccountDetails_User_Pagination");
                 return res;
     
@@ -1184,6 +1190,8 @@ async function depositrequestdetails(prod){
         
         
         }
+
+
 
 //mobile app  end
 module.exports ={

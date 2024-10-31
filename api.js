@@ -1112,7 +1112,7 @@ router.post("/depositrequestlistuser", function(request, response){
 
 
 
-router.post("/walletstatement", function(request, response){
+router.post("/walletstatementuser", function(request, response){
 
     let order= {...request.body}
     dboperations.getwalletstatement(order).then(result => {
@@ -1124,7 +1124,6 @@ router.post("/walletstatement", function(request, response){
     });
     
 });
-
 
 //End Mobile app
 
