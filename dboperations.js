@@ -1193,6 +1193,37 @@ async function depositrequestdetails(prod){
 
 
 
+        async function withdrwalrequestdetailsuser(prod){
+        
+            try{  
+              
+              console.log("Get fund transfer list  sp--- 1");
+        
+                    const conn= await sql.connect(config);
+                    const res =await conn.request()
+        
+                    .input("Userid",prod.userid)
+                    .input("StartDate",prod.fromdt)
+                    .input("EndDate",prod.todt)
+                    .input("Status",prod.status)
+                    .input("pageno",1)
+                    .input("PageSize",10000)
+                    .input("RecordCount", 100000)
+                    .execute("USP_WithdrawalDtls_Pagination_user");
+                    return res;
+        
+                    
+        
+            }catch(error){
+                console.log(error);
+            }
+            
+            
+            
+    }
+    
+     
+
 //mobile app  end
 module.exports ={
 
@@ -1250,7 +1281,8 @@ module.exports ={
     levelachiverreport:levelachiverreport,
     getmytotalteam:getmytotalteam,
     depositrequestdetails:depositrequestdetails,
-    getwalletstatement:getwalletstatement
+    getwalletstatement:getwalletstatement,
+    withdrwalrequestdetailsuser:withdrwalrequestdetailsuser
 
    
 }

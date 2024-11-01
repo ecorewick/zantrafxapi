@@ -1124,7 +1124,18 @@ router.post("/walletstatementuser", function(request, response){
     });
     
 });
+router.post("/withdrwalrequestDetailsuser", function(request, response){
 
+    let order= {...request.body}
+    dboperations.withdrwalrequestdetailsuser(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
 //End Mobile app
 
 
