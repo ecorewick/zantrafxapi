@@ -1136,6 +1136,77 @@ router.post("/withdrwalrequestDetailsuser", function(request, response){
     });
     
 });
+
+
+
+router.post("/getgeneratiolevelincome", function(request, response){
+
+    let order= {...request.body}
+    dboperations.generationlevelincomeuser(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+router.post("/getweeklygenerationincome", function(request, response){
+
+    let order= {...request.body}
+    dboperations.weeklygenerationincomeuser(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+router.post("/getTeamRank", function(request, response){
+
+    let order= {...request.body}
+    dboperations.TeamRank(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
+router.post("/getCtoincome", function(request, response){
+
+    let order= {...request.body}
+    dboperations.Ctoincome(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
+
+
+router.post("/getLuckydrawcoupon", function(request, response){
+
+    let order= {...request.body}
+    dboperations.luckydrawcoupon(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
+
+
+
 //End Mobile app
 
 

@@ -1223,6 +1223,155 @@ async function depositrequestdetails(prod){
     }
     
      
+async function generationlevelincomeuser(prod){
+
+    try{  
+             
+             
+   
+               const conn= await sql.connect(config);
+               const res =await conn.request()
+   
+               .input("Userid",prod.userid)
+               .input("StartDate",prod.fromdt)
+               .input("EndDate",prod.todt)
+              
+               .input("pageno",1)
+               .input("PageSize",10000)
+               .input("RecordCount", 100000)
+               .execute("USP_Generationlevelincome");
+               return res;    
+   
+       
+                   
+       
+           }catch(error){
+               console.log(error);
+       }
+       
+   }
+   
+   async function weeklygenerationincomeuser(prod){
+   
+       try{  
+                
+             console.log("My weekly getneration level  sp--- 1");
+          
+                    
+          
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+          
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 100000)
+            .execute("USP_weeklyGenerationincome");
+            return res;
+          
+                      
+          
+              }catch(error){
+                  console.log(error);
+          }
+          
+      }
+   
+   async function TeamRank(prod){
+   
+       try{  
+                
+           console.log("My Team Rank   sp--- 1");
+          
+          
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+          
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 100000)
+            .execute("USP_getTeamRank");
+            return res;
+          
+                      
+          
+              }catch(error){
+                  console.log(error);
+          }
+          
+   }   
+   async function Ctoincome(prod){
+   
+       try{  
+                
+                  console.log("My weekly getneration level  sp--- 1");
+          
+          
+                      console.log(prod.userid);
+                      console.log('---from -'+prod.fromdt);
+                      console.log('---to -'+prod.todt);
+                      console.log(prod.page);
+                      console.log(prod.limit);
+                    
+          
+                      const conn= await sql.connect(config);
+                      const res =await conn.request()
+          
+                      .input("Userid",prod.userid)
+                      .input("StartDate",prod.fromdt)
+                      .input("EndDate",prod.todt)
+                      .input("pageno",1)
+                      .input("PageSize",10000)
+                      .input("RecordCount", 100000)
+                      .execute("USP_GetCTOincome");
+                      return res;
+          
+                      
+          
+              }catch(error){
+                  console.log(error);
+          }
+          
+   }   
+   async function luckydrawcoupon(prod){
+   
+       try{  
+                
+                  console.log("My weekly getneration level  sp--- 1");
+          
+          
+                      console.log(prod.userid);
+                      console.log('---from -'+prod.fromdt);
+                      console.log('---to -'+prod.todt);
+                      console.log(prod.page);
+                      console.log(prod.limit);
+                    
+          
+                      const conn= await sql.connect(config);
+                      const res =await conn.request()
+          
+                      .input("Userid",prod.userid)
+                      .input("StartDate",prod.fromdt)
+                      .input("EndDate",prod.todt)
+                      .input("pageno",1)
+                      .input("PageSize",10000)
+                      .input("RecordCount", 100000)
+                      .execute("USP_Luckydrawcoupon");
+                      return res;
+          
+                      
+          
+              }catch(error){
+                  console.log(error);
+          }
+          
+   }   
+   
 
 //mobile app  end
 module.exports ={
@@ -1282,7 +1431,13 @@ module.exports ={
     getmytotalteam:getmytotalteam,
     depositrequestdetails:depositrequestdetails,
     getwalletstatement:getwalletstatement,
-    withdrwalrequestdetailsuser:withdrwalrequestdetailsuser
+    withdrwalrequestdetailsuser:withdrwalrequestdetailsuser,
+
+    generationlevelincomeuser:generationlevelincomeuser,
+    weeklygenerationincomeuser:weeklygenerationincomeuser,
+    TeamRank:TeamRank,
+    Ctoincome:Ctoincome,
+    luckydrawcoupon:luckydrawcoupon
 
    
 }
