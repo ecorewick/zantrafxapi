@@ -1205,6 +1205,18 @@ router.post("/getLuckydrawcoupon", function(request, response){
 });
 
 
+router.post("/getadminaddressbyid", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getadminaddress(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
 
 
 //End Mobile app

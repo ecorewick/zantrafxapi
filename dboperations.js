@@ -1372,6 +1372,25 @@ async function generationlevelincomeuser(prod){
           
    }   
    
+      async function getadminaddress(prod){
+   
+       try{  
+                
+                  console.log("My admin address   sp--- 1");        
+                      console.log(prod.paymenttype);
+                      const conn= await sql.connect(config);
+                      const res =await conn.request()
+                      .input("paymenttype",prod.paymenttype)              
+                      .execute("USP_getbtcaddress");
+                      return res;
+          
+                      
+          
+              }catch(error){
+                  console.log(error);
+          }
+          
+   }   
 
 //mobile app  end
 module.exports ={
@@ -1437,7 +1456,8 @@ module.exports ={
     weeklygenerationincomeuser:weeklygenerationincomeuser,
     TeamRank:TeamRank,
     Ctoincome:Ctoincome,
-    luckydrawcoupon:luckydrawcoupon
+    luckydrawcoupon:luckydrawcoupon,
+    getadminaddress:getadminaddress
 
    
 }
