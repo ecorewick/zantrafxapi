@@ -881,7 +881,21 @@ router.post("/insertFundcreditordebit", function(request, response){
     });
     
 });
+router.get("/getsupportreqlist", function(request, response){
 
+    let order= {...request.body}
+    dboperations.getSupportReqUserIDlist(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
 
 //Mobile app
 router.post("/signin", function(request, response){
