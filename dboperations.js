@@ -972,6 +972,31 @@ async function ibcommisions(prod){
         
         }
 
+        async function insertmessageadmin(prod){
+
+            try{  
+                
+                console.log("Get Support list  sp--- 1");
+                console.log(prod.userid);
+              
+                const conn= await sql.connect(config);
+                const res =await conn.request()
+            
+                .input("UserID",prod.userid)
+                .input("ticketID",prod.ticketid)
+                .input("Message",prod.message)
+                .execute("USP_InsertChatbyAdmin");
+                return res;
+            
+            
+            
+            }catch(error){
+                console.log(error);
+            }
+            
+            }
+
+
 async function insertfundcredit(prod){
 
     try{
@@ -1494,6 +1519,7 @@ module.exports ={
     upgradeadmin:upgradeadmin,
     Supporttokenlistbyuserid:Supporttokenlistbyuserid,
     getchatbyadmin:getchatbyadmin,
+    insertmessageadmin:insertmessageadmin,
 
 
     //mobileapp

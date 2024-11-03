@@ -928,6 +928,21 @@ router.post("/getchatlistbyticketid", function(request, response){
     });
     
 });
+router.post("/insertchatadmin", function(request, response){
+
+    let order= {...request.body}
+    dboperations.insertmessageadmin(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
 
 //Mobile app
 router.post("/signin", function(request, response){
