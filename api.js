@@ -1293,6 +1293,58 @@ router.post("/getadminaddressbyid", function(request, response){
     
 });
 
+router.post("/insertsupportcreatenew",upload.single("filename"),async function(request, response){
+
+    let order= {...request.body}
+   
+ 
+     console.log();
+     console.log(request.body.userid);
+
+     try{
+         
+        
+         const conn= await sql.connect(config);
+             const res =await conn.request()
+            
+             .input("File", request.file.filename)
+             .input("Message", request.body.Message)
+             .input("Subject", request.body.subject)
+             .input("UserID", request.body.userid)
+             .execute("USP_InsertChatbyUser");
+            // console.log(res);
+             //return res;
+ 
+                 if(res !=null){
+                        
+                         response.json({
+                             data:res.recordsets[0],
+                             
+                         });
+              }
+ 
+ 
+     }
+     catch(error){
+         console.log(error);
+     }
+        
+ });
+
+
+
+ router.post("/insertchatbyuserbyticketID", function(request, response){
+
+    let order= {...request.body}
+    dboperations.insertchatbyuser(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
 
 //End Mobile app
 

@@ -1250,10 +1250,7 @@ async function depositrequestdetails(prod){
     
     }
 
-
-    
-
-    
+  
 
     async function getwalletstatement(prod){
     
@@ -1291,7 +1288,7 @@ async function depositrequestdetails(prod){
 
 
 
-        async function withdrwalrequestdetailsuser(prod){
+async function withdrwalrequestdetailsuser(prod){
         
             try{  
               
@@ -1490,6 +1487,29 @@ async function generationlevelincomeuser(prod){
           
    }   
 
+   async function insertchatbyuser(prod){
+   
+    try{  
+             
+        console.log("Insert chat   sp--- 1");        
+        console.log(prod.paymenttype);
+        const conn= await sql.connect(config);
+        const res =await conn.request()
+        .input("UserID",prod.userid)  
+        .input("TicketID",prod.ticketno)     
+        .input("Message",prod.Message)                                
+        .execute("USP_InsertChatbytokenid");
+        return res;          
+       
+                   
+       
+           }catch(error){
+               console.log(error);
+       }
+       
+}   
+
+
 //mobile app  end
 module.exports ={
 
@@ -1560,6 +1580,7 @@ module.exports ={
     Ctoincome:Ctoincome,
     luckydrawcoupon:luckydrawcoupon,
     getadminaddress:getadminaddress,
+    insertchatbyuser:insertchatbyuser
    
 
 
