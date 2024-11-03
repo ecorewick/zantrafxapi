@@ -919,6 +919,37 @@ async function ibcommisions(prod){
     
  }
 
+
+
+ async function Supporttokenlistbyuserid(prod){
+
+    try{  
+        
+        console.log("Get Support list  sp--- 1");
+        console.log(prod.userid);
+        console.log(prod.status);
+    
+    
+        const conn= await sql.connect(config);
+        const res =await conn.request()
+    
+        .input("Userid",prod.userid)
+        .input("pageno",prod.page)
+        .input("PageSize",prod.limit)
+        .input("RecordCount", 10)
+        .execute("USP_getTicketlist_Pagination");
+        return res;
+    
+    
+    
+    }catch(error){
+        console.log(error);
+    }
+    
+    }
+
+
+
 async function insertfundcredit(prod){
 
     try{
@@ -1457,7 +1488,9 @@ module.exports ={
     TeamRank:TeamRank,
     Ctoincome:Ctoincome,
     luckydrawcoupon:luckydrawcoupon,
-    getadminaddress:getadminaddress
+    getadminaddress:getadminaddress,
+    Supporttokenlistbyuserid:Supporttokenlistbyuserid
+
 
    
 }
