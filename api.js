@@ -913,6 +913,21 @@ router.post("/getSupporttokenlistbyuserid", function(request, response){
     });
     
 });
+router.post("/getchatlistbyticketid", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getchatbyadmin(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
 
 //Mobile app
 router.post("/signin", function(request, response){

@@ -948,7 +948,29 @@ async function ibcommisions(prod){
     
     }
 
+    async function getchatbyadmin(prod){
 
+        try{  
+            
+            console.log("Get Support list  sp--- 1");
+            console.log(prod.userid);
+          
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+        
+            .input("Userid",prod.userid)
+            .input("ticketID",prod.ticketid)
+
+            .execute("USP_getchatdata_admin");
+            return res;
+        
+        
+        
+        }catch(error){
+            console.log(error);
+        }
+        
+        }
 
 async function insertfundcredit(prod){
 
@@ -1470,6 +1492,8 @@ module.exports ={
     getSupportReqUserIDlist:getSupportReqUserIDlist,
     insertfundcredit:insertfundcredit,
     upgradeadmin:upgradeadmin,
+    Supporttokenlistbyuserid:Supporttokenlistbyuserid,
+    getchatbyadmin:getchatbyadmin,
 
 
     //mobileapp
@@ -1489,7 +1513,7 @@ module.exports ={
     Ctoincome:Ctoincome,
     luckydrawcoupon:luckydrawcoupon,
     getadminaddress:getadminaddress,
-    Supporttokenlistbyuserid:Supporttokenlistbyuserid
+   
 
 
    
