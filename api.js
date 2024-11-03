@@ -943,7 +943,21 @@ router.post("/insertchatadmin", function(request, response){
     });
     
 });
+router.post("/insertchatcloseadmin", function(request, response){
 
+    let order= {...request.body}
+    dboperations.closeticketadmin(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
 //Mobile app
 router.post("/signin", function(request, response){
 

@@ -972,7 +972,7 @@ async function ibcommisions(prod){
         
         }
 
-        async function insertmessageadmin(prod){
+ async function insertmessageadmin(prod){
 
             try{  
                 
@@ -995,7 +995,27 @@ async function ibcommisions(prod){
             }
             
             }
+async function closeticketadmin(prod){
 
+     try{  
+                    
+                    console.log("Get Support close  sp--- 1");
+                    console.log(prod.userid);
+                  
+                    const conn= await sql.connect(config);
+                    const res =await conn.request()
+                
+                     .input("TicketID",prod.ticketid)
+                     .execute("USP_CloseTicketbyAdmin");
+                    return res;
+                
+                
+                
+                }catch(error){
+                    console.log(error);
+    }
+                
+ }
 
 async function insertfundcredit(prod){
 
@@ -1520,6 +1540,7 @@ module.exports ={
     Supporttokenlistbyuserid:Supporttokenlistbyuserid,
     getchatbyadmin:getchatbyadmin,
     insertmessageadmin:insertmessageadmin,
+    closeticketadmin:closeticketadmin,
 
 
     //mobileapp
