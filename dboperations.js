@@ -1486,7 +1486,33 @@ async function generationlevelincomeuser(prod){
           }
           
    }   
+   async function Upgradedetailsbymob(prod){
+    
+    try{  
+      
+      console.log("Get Upgrade list  sp--- 1");
 
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 10)
+            .execute("USP_getRechargedtls_Pagination");
+            return res;
+
+            
+
+    }catch(error){
+        console.log(error);
+    }
+    
+    
+    
+    }
    async function insertchatbyuser(prod){
    
     try{  
@@ -1605,6 +1631,7 @@ module.exports ={
     Ctoincome:Ctoincome,
     luckydrawcoupon:luckydrawcoupon,
     getadminaddress:getadminaddress,
+    Upgradedetailsbymob:Upgradedetailsbymob,
     insertchatbyuser:insertchatbyuser,
     supporttokenlistbyUseridmob:supporttokenlistbyUseridmob
    

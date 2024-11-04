@@ -1293,6 +1293,18 @@ router.post("/getadminaddressbyid", function(request, response){
     
 });
 
+router.post("/RechargeDtlsbyuser", function(request, response){
+
+    let order= {...request.body}
+    dboperations.Upgradedetailsbymob(order).then(result => {
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
 router.post("/insertsupportcreatenew",upload.single("filename"),async function(request, response){
 
     let order= {...request.body}
