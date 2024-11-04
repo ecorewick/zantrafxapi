@@ -1346,6 +1346,22 @@ router.post("/insertsupportcreatenew",upload.single("filename"),async function(r
     
 });
 
+
+
+router.post("/getSupporttokenlistIDbymob", function(request, response){
+
+    let order= {...request.body}
+    dboperations.supporttokenlistbyUseridmob(order).then(result => {
+    
+          
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
 //End Mobile app
 
 
