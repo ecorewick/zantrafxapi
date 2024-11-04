@@ -1362,6 +1362,21 @@ router.post("/getSupporttokenlistIDbymob", function(request, response){
     
 });
 
+
+
+router.post("/getchatlistbyticketidmob", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getchatbyadmin(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
 //End Mobile app
 
 
