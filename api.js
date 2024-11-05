@@ -1212,12 +1212,10 @@ router.post("/withdrwalrequestDetailsuser", function(request, response){
     
 });
 
-
-
-router.post("/getgeneratiolevelincome", function(request, response){
+router.post("/ibocomm", function(request, response){
 
     let order= {...request.body}
-    dboperations.generationlevelincomeuser(order).then(result => {
+    dboperations.getibocomm(order).then(result => {
     
         if(result !=null){
             console.log(result.recordsets[0])
@@ -1226,10 +1224,10 @@ router.post("/getgeneratiolevelincome", function(request, response){
     });
     
 });
-router.post("/getweeklygenerationincome", function(request, response){
+router.post("/tradingbonus", function(request, response){
 
     let order= {...request.body}
-    dboperations.weeklygenerationincomeuser(order).then(result => {
+    dboperations.gettradingbonus(order).then(result => {
     
         if(result !=null){
             console.log(result.recordsets[0])
@@ -1238,10 +1236,10 @@ router.post("/getweeklygenerationincome", function(request, response){
     });
     
 });
-router.post("/getTeamRank", function(request, response){
+router.post("/withdrawalbonus", function(request, response){
 
     let order= {...request.body}
-    dboperations.TeamRank(order).then(result => {
+    dboperations.getwithdrawalbonus(order).then(result => {
     
         if(result !=null){
             console.log(result.recordsets[0])
@@ -1251,18 +1249,56 @@ router.post("/getTeamRank", function(request, response){
     
 });
 
-router.post("/getCtoincome", function(request, response){
 
-    let order= {...request.body}
-    dboperations.Ctoincome(order).then(result => {
+// router.post("/getgeneratiolevelincome", function(request, response){
+
+//     let order= {...request.body}
+//     dboperations.generationlevelincomeuser(order).then(result => {
     
-        if(result !=null){
-            console.log(result.recordsets[0])
-            response.json(result["recordsets"][0]);
-        }
-    });
+//         if(result !=null){
+//             console.log(result.recordsets[0])
+//             response.json(result["recordsets"][0]);
+//         }
+//     });
     
-});
+// });
+// router.post("/getweeklygenerationincome", function(request, response){
+
+//     let order= {...request.body}
+//     dboperations.weeklygenerationincomeuser(order).then(result => {
+    
+//         if(result !=null){
+//             console.log(result.recordsets[0])
+//             response.json(result["recordsets"][0]);
+//         }
+//     });
+    
+// });
+// router.post("/getTeamRank", function(request, response){
+
+//     let order= {...request.body}
+//     dboperations.TeamRank(order).then(result => {
+    
+//         if(result !=null){
+//             console.log(result.recordsets[0])
+//             response.json(result["recordsets"][0]);
+//         }
+//     });
+    
+// });
+
+// router.post("/getCtoincome", function(request, response){
+
+//     let order= {...request.body}
+//     dboperations.Ctoincome(order).then(result => {
+    
+//         if(result !=null){
+//             console.log(result.recordsets[0])
+//             response.json(result["recordsets"][0]);
+//         }
+//     });
+    
+// });
 
 
 

@@ -1318,121 +1318,209 @@ async function withdrwalrequestdetailsuser(prod){
     }
     
      
-async function generationlevelincomeuser(prod){
 
-    try{  
-             
-             
-   
-               const conn= await sql.connect(config);
-               const res =await conn.request()
-   
-               .input("Userid",prod.userid)
-               .input("StartDate",prod.fromdt)
-               .input("EndDate",prod.todt)
+async function getibocomm(prod){
+        
+            try{  
               
-               .input("pageno",1)
-               .input("PageSize",10000)
-               .input("RecordCount", 100000)
-               .execute("USP_Generationlevelincome");
-               return res;    
+              console.log("Get getibocomm list  sp--- 1");
+        
+                    const conn= await sql.connect(config);
+                    const res =await conn.request()
+        
+                    .input("Userid",prod.userid)
+                    .input("StartDate",prod.fromdt)
+                    .input("EndDate",prod.todt)
+                    .input("Status",prod.status)
+                    .input("pageno",1)
+                    .input("PageSize",10000)
+                    .input("RecordCount", 100000)
+                    .execute("USP_IBCommisionBonus_Pagination_user");
+                    return res;
+        
+                    
+        
+            }catch(error){
+                console.log(error);
+            }
+            
+            
+            
+    }
+
+    async function gettradingbonus(prod){
+        
+        try{  
+          
+          console.log("Get getibocomm list  sp--- 1");
+    
+                const conn= await sql.connect(config);
+                const res =await conn.request()
+    
+                .input("Userid",prod.userid)
+                .input("StartDate",prod.fromdt)
+                .input("EndDate",prod.todt)
+                .input("Status",prod.status)
+                .input("pageno",1)
+                .input("PageSize",10000)
+                .input("RecordCount", 100000)
+                .execute("USP_TradingBonus_Pagination_user");
+                return res;
+    
+                
+    
+        }catch(error){
+            console.log(error);
+        }
+        
+        
+        
+}
+async function getwithdrawalbonus(prod){
+        
+    try{  
+      
+      console.log("Get getibocomm list  sp--- 1");
+
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+
+            .input("Userid",prod.userid)
+            .input("StartDate",prod.fromdt)
+            .input("EndDate",prod.todt)
+            .input("Status",prod.status)
+            .input("pageno",1)
+            .input("PageSize",10000)
+            .input("RecordCount", 100000)
+            .execute("USP_WithdrawalBonus_Pagination_user");
+            return res;
+
+            
+
+    }catch(error){
+        console.log(error);
+    }
+    
+    
+    
+}
+
+
+// async function generationlevelincomeuser(prod){
+
+//     try{  
+             
+             
+   
+//                const conn= await sql.connect(config);
+//                const res =await conn.request()
+   
+//                .input("Userid",prod.userid)
+//                .input("StartDate",prod.fromdt)
+//                .input("EndDate",prod.todt)
+              
+//                .input("pageno",1)
+//                .input("PageSize",10000)
+//                .input("RecordCount", 100000)
+//                .execute("USP_Generationlevelincome");
+//                return res;    
    
        
                    
        
-           }catch(error){
-               console.log(error);
-       }
+//            }catch(error){
+//                console.log(error);
+//        }
        
-   }
+//    }
    
-   async function weeklygenerationincomeuser(prod){
+//    async function weeklygenerationincomeuser(prod){
    
-       try{  
+//        try{  
                 
-             console.log("My weekly getneration level  sp--- 1");
+//              console.log("My weekly getneration level  sp--- 1");
           
                     
           
-            const conn= await sql.connect(config);
-            const res =await conn.request()
+//             const conn= await sql.connect(config);
+//             const res =await conn.request()
           
-            .input("Userid",prod.userid)
-            .input("StartDate",prod.fromdt)
-            .input("EndDate",prod.todt)
-            .input("pageno",1)
-            .input("PageSize",10000)
-            .input("RecordCount", 100000)
-            .execute("USP_weeklyGenerationincome");
-            return res;
-          
-                      
-          
-              }catch(error){
-                  console.log(error);
-          }
-          
-      }
-   
-   async function TeamRank(prod){
-   
-       try{  
-                
-           console.log("My Team Rank   sp--- 1");
-          
-          
-            const conn= await sql.connect(config);
-            const res =await conn.request()
-          
-            .input("Userid",prod.userid)
-            .input("StartDate",prod.fromdt)
-            .input("EndDate",prod.todt)
-            .input("pageno",1)
-            .input("PageSize",10000)
-            .input("RecordCount", 100000)
-            .execute("USP_getTeamRank");
-            return res;
+//             .input("Userid",prod.userid)
+//             .input("StartDate",prod.fromdt)
+//             .input("EndDate",prod.todt)
+//             .input("pageno",1)
+//             .input("PageSize",10000)
+//             .input("RecordCount", 100000)
+//             .execute("USP_weeklyGenerationincome");
+//             return res;
           
                       
           
-              }catch(error){
-                  console.log(error);
-          }
+//               }catch(error){
+//                   console.log(error);
+//           }
           
-   }   
-   async function Ctoincome(prod){
+//       }
    
-       try{  
+//    async function TeamRank(prod){
+   
+//        try{  
                 
-                  console.log("My weekly getneration level  sp--- 1");
+//            console.log("My Team Rank   sp--- 1");
           
           
-                      console.log(prod.userid);
-                      console.log('---from -'+prod.fromdt);
-                      console.log('---to -'+prod.todt);
-                      console.log(prod.page);
-                      console.log(prod.limit);
+//             const conn= await sql.connect(config);
+//             const res =await conn.request()
+          
+//             .input("Userid",prod.userid)
+//             .input("StartDate",prod.fromdt)
+//             .input("EndDate",prod.todt)
+//             .input("pageno",1)
+//             .input("PageSize",10000)
+//             .input("RecordCount", 100000)
+//             .execute("USP_getTeamRank");
+//             return res;
+          
+                      
+          
+//               }catch(error){
+//                   console.log(error);
+//           }
+          
+//    }   
+//    async function Ctoincome(prod){
+   
+//        try{  
+                
+//                   console.log("My weekly getneration level  sp--- 1");
+          
+          
+//                       console.log(prod.userid);
+//                       console.log('---from -'+prod.fromdt);
+//                       console.log('---to -'+prod.todt);
+//                       console.log(prod.page);
+//                       console.log(prod.limit);
                     
           
-                      const conn= await sql.connect(config);
-                      const res =await conn.request()
+//                       const conn= await sql.connect(config);
+//                       const res =await conn.request()
           
-                      .input("Userid",prod.userid)
-                      .input("StartDate",prod.fromdt)
-                      .input("EndDate",prod.todt)
-                      .input("pageno",1)
-                      .input("PageSize",10000)
-                      .input("RecordCount", 100000)
-                      .execute("USP_GetCTOincome");
-                      return res;
+//                       .input("Userid",prod.userid)
+//                       .input("StartDate",prod.fromdt)
+//                       .input("EndDate",prod.todt)
+//                       .input("pageno",1)
+//                       .input("PageSize",10000)
+//                       .input("RecordCount", 100000)
+//                       .execute("USP_GetCTOincome");
+//                       return res;
           
                       
           
-              }catch(error){
-                  console.log(error);
-          }
+//               }catch(error){
+//                   console.log(error);
+//           }
           
-   }   
+//    }   
    async function luckydrawcoupon(prod){
    
        try{  
@@ -1625,10 +1713,14 @@ module.exports ={
     getwalletstatement:getwalletstatement,
     withdrwalrequestdetailsuser:withdrwalrequestdetailsuser,
 
-    generationlevelincomeuser:generationlevelincomeuser,
-    weeklygenerationincomeuser:weeklygenerationincomeuser,
-    TeamRank:TeamRank,
-    Ctoincome:Ctoincome,
+    // generationlevelincomeuser:generationlevelincomeuser,
+    // weeklygenerationincomeuser:weeklygenerationincomeuser,
+    // TeamRank:TeamRank,
+    // Ctoincome:Ctoincome,
+    getibocomm:getibocomm,
+    gettradingbonus:gettradingbonus,
+    getwithdrawalbonus:getwithdrawalbonus,
+    
     luckydrawcoupon:luckydrawcoupon,
     getadminaddress:getadminaddress,
     Upgradedetailsbymob:Upgradedetailsbymob,
