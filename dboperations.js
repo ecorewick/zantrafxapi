@@ -1691,6 +1691,7 @@ module.exports ={
     
     ibcommisions:ibcommisions,
     tradingbonus:tradingbonus,
+
     teamwithwalbous:teamwithwalbous,
     getbalancebywallet:getbalancebywallet,
     getSupportReqUserIDlist:getSupportReqUserIDlist,
@@ -1720,7 +1721,7 @@ module.exports ={
     getibocomm:getibocomm,
     gettradingbonus:gettradingbonus,
     getwithdrawalbonus:getwithdrawalbonus,
-    
+
     luckydrawcoupon:luckydrawcoupon,
     getadminaddress:getadminaddress,
     Upgradedetailsbymob:Upgradedetailsbymob,
