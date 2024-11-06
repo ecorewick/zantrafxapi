@@ -366,6 +366,19 @@ async function updaterejectrequest(prod){
         
 }
 
+async function checkroiincome(prod){
+    try{
+        const conn= await sql.connect(config);
+              const res =await conn.request()
+              .input("per",prod.per)
+              .execute("USP_CheckFutureIncome_Admin");
+              return res;
+      }catch(error){
+          console.log(error);
+      }        
+            
+        
+}
 
 
 async function roisetting(prod){
@@ -1676,7 +1689,7 @@ module.exports ={
     depositrequest:depositrequest,
     updateapprovedrequest:updateapprovedrequest,
     updaterejectrequest:updaterejectrequest,
-
+    checkroiincome:checkroiincome,
     upgrade:upgrade,
     Upgradedetails:Upgradedetails,
     fundtranfer:fundtranfer,

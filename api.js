@@ -375,6 +375,21 @@ router.post("/updateprofile", function(request, response){
 });
 
 
+router.post("/checkfutureroiincome", function(request, response){
+
+    let order= {...request.body}
+    dboperations.checkroiincome(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
 
 router.post("/updateroisetting", function(request, response){
 
