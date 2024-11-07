@@ -790,6 +790,39 @@ async function blockunblock(prod){
 }
 
 
+
+async function updatewithdrawalapprovedrequest(prod){
+    try{
+        const conn= await sql.connect(config);
+              const res =await conn.request()
+              .input("ID",prod.id)
+              .execute("USP_ApproveWithdrawalRequest");
+              return res;
+      }catch(error){
+          console.log(error);
+      }        
+            
+        
+}
+
+async function updatewithdrawalrejectrequest(prod){
+    try{
+        const conn= await sql.connect(config);
+              const res =await conn.request()
+              .input("ID",prod.id)
+              .execute("USP_RejectWithdrawalRequest");
+              return res;
+      }catch(error){
+          console.log(error);
+      }        
+            
+        
+}
+
+
+
+
+
     async function withdrwalrequestDetails(prod){
         
         try{  
@@ -1701,7 +1734,11 @@ module.exports ={
     withdrwalrequest:withdrwalrequest,
     withdrwalrequestDetails:withdrwalrequestDetails,
     withdrwalrequestuser:withdrwalrequestuser,
-    
+    updatewithdrawalapprovedrequest:updatewithdrawalapprovedrequest,
+    updatewithdrawalrejectrequest:updatewithdrawalrejectrequest,
+
+
+
     ibcommisions:ibcommisions,
     tradingbonus:tradingbonus,
 
