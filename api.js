@@ -60,6 +60,19 @@ router.route('/getwithdrawalstatus').post((request,response)=>{
         }
 
 });
+router.route('/updatewithdrawalstatus').post((request,response)=>{
+
+    try{
+        dboperations.updatwewithdrawalstatus().then(result =>{
+               console.log(result);
+               response.json(result["recordsets"][0]);
+           })
+         }
+        catch(error){
+
+        }
+
+});
 
 router.route('/countrylist').post((request,response)=>{
 
