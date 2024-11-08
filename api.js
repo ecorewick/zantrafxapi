@@ -47,6 +47,19 @@ app.use('/images', express.static('images'));
 var drespose="";
 
 //// Global START
+router.route('/getwithdrawalstatus').post((request,response)=>{
+
+    try{
+        dboperations.getwithdrawalstatus().then(result =>{
+               console.log(result);
+               response.json(result["recordsets"][0]);
+           })
+         }
+        catch(error){
+
+        }
+
+});
 
 router.route('/countrylist').post((request,response)=>{
 

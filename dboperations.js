@@ -10,6 +10,20 @@ var CryptoJS = require("crypto-js");
 
 ////// end txg global
 
+async function getwithdrawalstatus(){
+
+    try{
+
+     const conn= await sql.connect(config);
+     const res =await conn.request()
+    .execute("USP_GET_WithdrawalStatus");
+     return res;
+
+    }catch(error){
+        console.log(error);
+    }
+}
+
 
 async function getCountry(){
 
@@ -1707,7 +1721,7 @@ module.exports ={
     updatepassword:updatepassword,
     updateadminpwd:updateadminpwd,
     getName:getName,
-
+    getwithdrawalstatus:getwithdrawalstatus,
     getprofileadmin:getprofileadmin,
     updatebtcaddress:updatebtcaddress,
     getCountry:getCountry,
