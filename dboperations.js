@@ -24,7 +24,7 @@ async function getwithdrawalstatus(){
     }
 }
 
-async function updatwewithdrawalstatus(){
+async function updatwewithdrawalstatus(prod){
 
     try{
 
