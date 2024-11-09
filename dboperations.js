@@ -24,20 +24,21 @@ async function getwithdrawalstatus(){
     }
 }
 
-async function updatwewithdrawalstatus(prod){
-
-    try{
-
-     const conn= await sql.connect(config);
-     const res =await conn.request()
-     .input("status",prod.id)
-    .execute("USP_Updatewewithdrawalstatus");
-     return res;
-
-    }catch(error){
-        console.log(error);
+async function updatwithdrawal(prod){
+    console.log(prod.id);
+   
+        try{
+          const conn= await sql.connect(config);
+                const res =await conn.request()
+                .input("status",prod.id)
+                .execute("USP_Updatewewithdrawalstatus");
+                return res;
+        }catch(error){
+            console.log(error);
+        }
+    
     }
-}
+    
 
 async function getCountry(){
 
@@ -1736,7 +1737,7 @@ module.exports ={
     updateadminpwd:updateadminpwd,
     getName:getName,
     getwithdrawalstatus:getwithdrawalstatus,
-    updatwewithdrawalstatus:updatwewithdrawalstatus,
+    updatwithdrawal:updatwithdrawal,
 
     getprofileadmin:getprofileadmin,
     updatebtcaddress:updatebtcaddress,
