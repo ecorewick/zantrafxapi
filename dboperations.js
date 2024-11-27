@@ -129,7 +129,8 @@ async function getCheckSpnsor(prod){
             .input("aadharno",prod.aadharno)
             .input("panno",prod.panno)
             .input("PWD",prod.password)
-          
+            .input("paymenttype",prod.paymenttype)
+            .input("btcaddress",prod.btcaddress)
             .execute("USP_Register");
             return res;
 
@@ -185,15 +186,15 @@ async function adminapi(prod){
 async function getdashboard(prod){
 
   // Decrypt
-  var bytes = CryptoJS.AES.decrypt(prod.userid, 'msecret-keys@9128');
-  var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-console.log('TT '+decryptedData);
+//   var bytes = CryptoJS.AES.decrypt(prod.userid, 'msecret-keys@9128');
+//   var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+// console.log('TT '+decryptedData);
 
     try{
             const conn= await sql.connect(config);
             const res =await conn.request()
-            .input("USERID",decryptedData)
-            .execute("USP_GetCustomerDashBoardDtls_New");
+            // .input("USERID",decryptedData)
+            .execute("USP_GetAdminDashBoardDtls");
             return res;
     }catch(error){
         console.log(error);
@@ -649,6 +650,25 @@ async function directincome(prod){
 }
 
 
+async function fundtranfertotrading(prod){
+    console.log(prod.userId);
+    
+        try{
+          const conn= await sql.connect(config);
+                const res =await conn.request()
+                .input("MemberId",prod.userId)
+                .input("AmountRequested",prod.amount)
+                .input("Remarks",prod.remarks)
+                .execute("USP_Insert_FundTransfertoTradingWallet");
+                return res;
+        }catch(error){
+            console.log(error);
+        }
+    
+ }
+
+
+
 async function fundtranfer(prod){
     console.log(prod.userId);
     
@@ -658,6 +678,8 @@ async function fundtranfer(prod){
                 .input("MemberId",prod.userId)
                 .input("AmountRequested",prod.amount)
                 .input("Remarks",prod.remarks)
+                .input("fromwallet",prod.fromwallet)
+                .input("towallet",prod.towallet)
                 .execute("USP_Insert_ClientFundTransfer");
                 return res;
         }catch(error){
@@ -894,6 +916,7 @@ async function withdrwalrequestuser(prod){
                 .input("AmountRequested",prod.amount)
                 .input("Remarks",prod.remarks)
                 .input("wallet", "3")
+                .input("address", prod.address)
                 .execute("USP_InsertWithdrawalRequest_user");
                 return res;
         }catch(error){
@@ -1113,7 +1136,21 @@ async function insertfundcredit(prod){
     }
 
 }
+async function getRankNames(){
+
  
+    try{
+
+     const conn= await sql.connect(config);
+     const res =await conn.request()
+    .execute("USP_GetRankNames");
+     return res;
+
+    }catch(error){
+        console.log(error);
+    }
+}
+
 
 //mobile app api start
 
@@ -1406,7 +1443,7 @@ async function getibocomm(prod){
                     .input("Userid",prod.userid)
                     .input("StartDate",prod.fromdt)
                     .input("EndDate",prod.todt)
-                    .input("Status",prod.status)
+                    // .input("Status",prod.status)
                     .input("pageno",1)
                     .input("PageSize",10000)
                     .input("RecordCount", 100000)
@@ -1435,7 +1472,7 @@ async function getibocomm(prod){
                 .input("Userid",prod.userid)
                 .input("StartDate",prod.fromdt)
                 .input("EndDate",prod.todt)
-                .input("Status",prod.status)
+                // .input("Status",prod.status)
                 .input("pageno",1)
                 .input("PageSize",10000)
                 .input("RecordCount", 100000)
@@ -1724,6 +1761,75 @@ async function supporttokenlistbyUseridmob(prod){
     }
     
     }
+
+
+async function getRankachivers(prod){
+
+        try{  
+          
+            console.log("My Rank sp--- 1");
+    
+    
+                console.log(prod.userid);
+                console.log('---from -'+prod.fromdt);
+                console.log('---to -'+prod.todt);
+                console.log(prod.page);
+                console.log(prod.limit);
+              
+    
+                const conn= await sql.connect(config);
+                const res =await conn.request()
+    
+                .input("userid",prod.userid)
+
+                .input("fromdt",prod.fromdt)
+                .input("todt",prod.todt)
+
+                .input("rankid",prod.rankid)
+
+                .input("pageno",prod.page)
+                .input("PageSize",prod.limit)
+                .input("RecordCount", 10)
+                .execute("USP_GetRankAchivers");
+                return res;
+    
+                
+    
+        }catch(error){
+            console.log(error);
+        }
+    
+    }
+    
+
+ async function getgrowthtree(prod){
+
+        try{  
+            
+            console.log("Get Get SponDetails Growth list  sp--- 1");
+            console.log(prod.userid);
+          
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+        
+           
+            .input("MemberID",prod.userid)
+
+            .execute("USP_GetSponDetailsGrowth_user");
+            return res;
+        
+        
+        
+        }catch(error){
+            console.log(error);
+        }
+        
+}
+
+
+
+
+
 //mobile app  end
 module.exports ={
 
@@ -1782,7 +1888,8 @@ module.exports ={
     getchatbyadmin:getchatbyadmin,
     insertmessageadmin:insertmessageadmin,
     closeticketadmin:closeticketadmin,
-
+    getRankNames:getRankNames,
+    getRankachivers:getRankachivers,
 
     //mobileapp
     signinapi:signinapi,
@@ -1794,7 +1901,7 @@ module.exports ={
     depositrequestdetails:depositrequestdetails,
     getwalletstatement:getwalletstatement,
     withdrwalrequestdetailsuser:withdrwalrequestdetailsuser,
-
+    fundtranfertotrading:fundtranfertotrading,
     // generationlevelincomeuser:generationlevelincomeuser,
     // weeklygenerationincomeuser:weeklygenerationincomeuser,
     // TeamRank:TeamRank,
@@ -1807,7 +1914,8 @@ module.exports ={
     getadminaddress:getadminaddress,
     Upgradedetailsbymob:Upgradedetailsbymob,
     insertchatbyuser:insertchatbyuser,
-    supporttokenlistbyUseridmob:supporttokenlistbyUseridmob
+    supporttokenlistbyUseridmob:supporttokenlistbyUseridmob,
+    getgrowthtree:getgrowthtree
    
 
 

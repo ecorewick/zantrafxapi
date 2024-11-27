@@ -44,7 +44,11 @@ app.use('/api', router);
 
 app.use('/images', express.static('images'));
 
+
+
+
 var drespose="";
+
 
 //// Global START
 router.route('/getwithdrawalstatus').post((request,response)=>{
@@ -76,6 +80,21 @@ router.post("/updatewithdrawalstatus", function(request, response){
     });
     
 });
+
+router.route('/country').get((request,response)=>{
+
+    try{
+        dboperations.getCountry().then(result =>{
+               console.log(result);
+               response.json(result["recordsets"][0]);
+           })
+         }
+        catch(error){
+
+        }
+
+});
+
 
 router.route('/countrylist').post((request,response)=>{
 
@@ -134,6 +153,108 @@ router.post("/signup", function(request, response){
     });
     
 });
+
+
+crypto.randomBytes(12,function (err, bytes){
+    console.log(bytes.toString("hex"));
+    });
+    //deposit
+    
+    const storage = multer.diskStorage({
+        destination:function(request, file, cb){
+            cb(null,'./images')
+        },
+        filename:function(request, file, cb){
+            crypto.randomBytes(12, function(err,bytes){
+                const fn= bytes.toString("hex")+ path.extname(file.originalname)
+                cb(null,fn)
+            })
+        }
+    })
+    
+    
+    const upload = multer({storage:storage})
+
+
+const cpUploadsignup = upload.fields([{ name: 'filename', maxCount: 1 }, { name: 'filename1', maxCount: 1 }])
+
+router.post("/signup_fileupload",cpUploadsignup,async function(request, response){
+
+    let order= {...request.body}
+   
+     console.log('Dtata--1');
+     console.log(request.body.userid);
+     console.log(request.files['filename'][0].filename.toString());
+     console.log(request.files['filename1'][0].filename.toString());
+     console.log(request.body.panno);
+     console.log(request.body.aadharno);
+     console.log('Dtata--2');
+ 
+ 
+     try{
+         
+        
+         const conn= await sql.connect(config);
+             const res =await conn.request()
+            
+
+
+             .input("SPONSORID",request.body.sponserid)
+            .input("INTRODUCERUSEID","")
+            .input("TITLE",request.body.title)
+            .input("COUNTRY",request.body.country)
+            .input("State",request.body.state)
+            .input("FIRSTNAME",request.body.firstname)
+            .input("LastName",request.body.lastname)
+            .input("MOBILENO",request.body.mobile)
+            .input("EMAILID",request.body.email)
+            .input("Address",request.body.address)
+            .input("pincode",request.body.pincode)
+            .input("city",request.body.city)
+            .input("aadharno",request.body.aadharno)
+            .input("panno",request.body.panno)
+            .input("PWD",request.body.password)
+            .input("paymenttype",request.body.paymenttype)
+            .input("btcaddress",request.body.btcaddress)
+            .input("aadharimage",request.files['filename'][0].filename.toString())
+            .input("PancardImage",request.files['filename1'][0].filename.toString())
+            .execute("USP_Register");
+
+            // console.log(res);
+             //return res;
+ 
+            //      if(res !=null){
+                    
+            //         response.json({
+            //             data:res.recordsets[0],
+                        
+            //         });
+            //   }
+            if(res !=null){
+                console.log(res.recordsets[0])
+                response.json(res["recordsets"][0]);
+            }
+ 
+ 
+     }
+     catch(error){
+         console.log(error);
+     }
+ 
+ 
+        
+ });
+ 
+ 
+
+
+
+
+
+
+
+
+
 router.post("/welcome", function(request, response){
 
     try{
@@ -264,23 +385,16 @@ router.post("/getdashboard", function(request, response){
     dboperations.getdashboard(order).then(result => {
     
        
-          console.log(result.recordsets);
-          console.log('1114');
-          response.json({
-                
-                message:"success",
-                result:result.recordsets[0]
-            });
-            //console.log(token);
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json({
+                data:result.recordsets[0],
+               
 
-           // response.json(token);
+            });
+        }
     
     });
-
-
-
-
-
     
 });
 
@@ -470,25 +584,7 @@ router.post("/updatebtcaddres", function(request, response){
 });
 
 
-crypto.randomBytes(12,function (err, bytes){
-console.log(bytes.toString("hex"));
-});
-//deposit
 
-const storage = multer.diskStorage({
-    destination:function(request, file, cb){
-        cb(null,'./images')
-    },
-    filename:function(request, file, cb){
-        crypto.randomBytes(12, function(err,bytes){
-            const fn= bytes.toString("hex")+ path.extname(file.originalname)
-            cb(null,fn)
-        })
-    }
-})
-
-
-const upload = multer({storage:storage})
 
 router.post("/insetdepositrequest",upload.single("filename"),async function(request, response){
 
@@ -705,7 +801,21 @@ router.post("/RechargeDtls", function(request, response){
 });
 
 
+router.post("/fundtransfertotradingwallet", function(request, response){
 
+    let order= {...request.body}
+    dboperations.fundtranfertotrading(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],
+                   
+                });
+            }
+    });
+    
+});
 
 router.post("/fundtransfer", function(request, response){
 
@@ -1042,6 +1152,40 @@ router.post("/insertchatcloseadmin", function(request, response){
     });
     
 });
+
+
+
+
+
+router.route('/RankNames').get((request,response)=>{
+
+    try{
+        dboperations.getRankNames().then(result =>{
+               console.log(result);
+               response.json(result["recordsets"][0]);
+           })
+         }
+        catch(error){
+
+        }
+
+});
+
+router.post("/Rankachivers", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getRankachivers(order).then(result => {
+    
+          if(result !=null){
+                console.log(result.recordsets[0])
+                response.json({
+                    data:result.recordsets[0],                   
+                });
+            }
+    });
+    
+});
+
 //Mobile app
 router.post("/signin", function(request, response){
 
@@ -1199,6 +1343,61 @@ router.post("/kycprofile", function(request, response){
     });
     
 });
+
+
+
+const cpUpload = upload.fields([{ name: 'filename', maxCount: 1 }, { name: 'filename1', maxCount: 1 }])
+
+router.post("/updatekycprofile",cpUpload,async function(request, response){
+
+    let order= {...request.body}
+   
+     console.log('Dtata--1');
+     console.log(request.body.userid);
+     console.log(request.files['filename'][0].filename.toString());
+     console.log(request.files['filename1'][0].filename.toString());
+     console.log(request.body.panno);
+     console.log(request.body.aadharno);
+     console.log('Dtata--2');
+ 
+ 
+     try{
+         
+        
+         const conn= await sql.connect(config);
+             const res =await conn.request()
+            
+            .input("Panno",request.body.panno)
+            .input("Aadharno",request.body.aadharno)
+            .input("MEMBERID",request.body.userid)
+            .input("aadharimage",request.files['filename'][0].filename.toString())
+            .input("PancardImage",request.files['filename1'][0].filename.toString())
+
+
+             .execute("USP_Updatekyc");
+            // console.log(res);
+             //return res;
+ 
+                 if(res !=null){
+                    
+                    response.json({
+                        data:res.recordsets[0],
+                        
+                    });
+              }
+ 
+ 
+     }
+     catch(error){
+         console.log(error);
+     }
+ 
+ 
+        
+ });
+ 
+ 
+
 
 
 
@@ -1508,6 +1707,20 @@ router.post("/getchatlistbyticketidmob", function(request, response){
     });
     
 });
+
+router.post("/growthtree", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getgrowthtree(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
 
 //End Mobile app
 
