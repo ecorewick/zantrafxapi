@@ -1802,6 +1802,32 @@ async function getRankachivers(prod){
     }
     
 
+
+    async function getgrowthtreeTop(prod){
+
+        try{  
+            
+            console.log("Get Get SponDetails Growth list  sp--- 1");
+            console.log(prod.userid);
+          
+            const conn= await sql.connect(config);
+            const res =await conn.request()
+        
+           
+            .input("MemberID",prod.userid)
+
+            .execute("USP_GetmidDetails_user");
+            return res;
+        
+        
+        
+        }catch(error){
+            console.log(error);
+        }
+        
+}
+
+
  async function getgrowthtree(prod){
 
         try{  
@@ -1915,6 +1941,7 @@ module.exports ={
     Upgradedetailsbymob:Upgradedetailsbymob,
     insertchatbyuser:insertchatbyuser,
     supporttokenlistbyUseridmob:supporttokenlistbyUseridmob,
+    getgrowthtreeTop:getgrowthtreeTop,
     getgrowthtree:getgrowthtree
    
 

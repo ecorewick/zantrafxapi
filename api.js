@@ -1708,6 +1708,19 @@ router.post("/getchatlistbyticketidmob", function(request, response){
     
 });
 
+router.post("/growthtreetop", function(request, response){
+
+    let order= {...request.body}
+    dboperations.getgrowthtreeTop(order).then(result => {
+    
+        if(result !=null){
+            console.log(result.recordsets[0])
+            response.json(result["recordsets"][0]);
+        }
+    });
+    
+});
+
 router.post("/growthtree", function(request, response){
 
     let order= {...request.body}
